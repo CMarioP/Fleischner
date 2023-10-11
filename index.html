@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Import Materialize CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <title>Guías de la Sociedad Fleischner</title>
+        <style>
+          .container {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 100px;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h3 class="header" style="color: #ee6e73 !important" style="font-size: 24px !important">Guías de la Sociedad Fleischner para nódulos pulmonares incidentales</h3>
+            <h3 class="header" style="color: #ee6e73 !important" style="font-size: 24px !important"> </h3>
+            <ul class="collapsible">
+                <li>
+                <div class="collapsible-header"><i class="material-icons">brightness_high</i>Nódulo sólido</div>
+                <div class="collapsible-body">
+                    <div class="card">
+                        <span class="card-title">Número de nódulos</span>
+                        <p>
+                            <label>
+                              <input name="solidoNumero" type="radio" value="solidoUnico" />
+                              <span>Nódulo único</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                              <input name="solidoNumero" type="radio" value="solidoMultiples" />
+                              <span>Nódulos múltiples</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-title">Tamaño de los nódulos</span>
+                        <p>
+                            <label>
+                              <input name="solidoTamano" type="radio" value="solidoMenorSeis" />
+                              <span>Menor que 6 mm</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                              <input name="solidoTamano" type="radio" value="solidoSeisOcho" />
+                              <span>6 mm - 8 mm</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input name="solidoTamano" type="radio" value="solidoMayorSeis" />
+                                <span>Mayor que 8 mm</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                </li>
+                <li>
+                <div class="collapsible-header"><i class="material-icons">brightness_low</i>Nódulo subsólido</div>
+                <div class="collapsible-body">
+                    <div class="card">
+                        <span class="card-title">Número de nódulos</span>
+                        <p>
+                            <label>
+                              <input name="subsolidoNumero" id = "unico" type="radio" value="subsolidoUnico" />
+                              <span>Nódulo único</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                              <input name="subsolidoNumero" type="radio" value="subsolidoMultiples" />
+                              <span>Nódulos múltiples</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="card" id="subsolidoTipoCard">
+                        <span class="card-title">Tipo de nódulo único</span>
+                        <p>
+                            <label>
+                              <input name="subsolidoTipo" type="radio" value="subsolidoVidrio" />
+                              <span>Vidrio esmerilado</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                              <input name="subsolidoTipo" type="radio" value="subsolidoParteSolido" />
+                              <span>Parcialmente sólido</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <span class="card-title">Tamaño de los nódulos</span>
+                        <p>
+                            <label>
+                              <input name="subsolidoTamano" type="radio" value="subsubsolidoMenorSeis" />
+                              <span>Menor que 6 mm</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                              <input name="subsolidoTamano" type="radio" value="subsolidoMayorSeis" />
+                              <span>Mayor o igual que 6 mm</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+                </li>
+            </ul>
+            <div id="result">
+                <div class="card-panel teal">
+                    <span class="white-text" id="resultadoTexto"></span>
+                </div>
+                <div>
+                    <a class="waves-effect waves-light btn" id = "copiar">Copiar</a>
+                </div>
+            </div>
+        </div>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
+            const card = document.getElementById('subsolidoTipoCard');
+            card.style.display = "none";
+            const cardResult = document.getElementById('result');
+            cardResult.style.display = "none";
+            const buttonCopy = document.getElementById('copiar');
+            buttonCopy.addEventListener('click', copiarClipboard);
+
+            const radioButtonsSubsolido = document.querySelectorAll('input[name="subsolidoNumero"]');
+            radioButtonsSubsolido.forEach(radio => {
+                radio.addEventListener('click', handleRadioSubsolidoClick);
+            });
+
+            function handleRadioSubsolidoClick() {
+                if (document.getElementById('unico').checked) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+
+            const radioButtonsSolidoNumero = document.querySelectorAll('input[name="solidoNumero"]');
+            const radioButtonsSolidoTamano = document.querySelectorAll('input[name="solidoTamano"]');
+            radioButtonsSolidoNumero.forEach(radio => {
+                radio.addEventListener('click', textNoduloSolido);
+            });
+            radioButtonsSolidoTamano.forEach(radio => {
+                radio.addEventListener('click', textNoduloSolido);
+            });
+
+            function textNoduloSolido(){
+                var numeroNodulo = document.querySelector('input[name="solidoNumero"]:checked').value;
+                var tipoNodulo = document.querySelector('input[name="solidoTamano"]:checked').value;
+                var respuesta = "";
+                if(numeroNodulo === "solidoUnico"){
+                    if(tipoNodulo === "solidoMenorSeis"){
+                        respuesta = "Nódulo pulmonar único, sólido, de menos de 6 mm de diámetro. Según los criterios de Fleischner de 2017, si el paciente es de bajo riesgo no se recomienda ningún seguimiento de rutina. Si el paciente es de alto riesgo se recomienda una TC opcional a los 12 meses.";
+                    }
+                    else if(tipoNodulo === "solidoSeisOcho"){
+                        respuesta = "Nódulo pulmonar único, sólido, con diámetro entre 6 y 8 mm. Según los criterios de Fleischner de 2017, si el paciente es de bajo riesgo se recomienda TC a los 6-12 meses, luego considerar TC a los 18-24 meses. Si el paciente es de alto riesgo se recomienda TC a los 6-12 meses y luego TC a los 18-24 meses.";
+                    }
+                    else if(tipoNodulo === "solidoMayorSeis"){
+                        respuesta = "Nódulo pulmonar único, sólido, de más de 8 mm de diámetro. Según los criterios de Fleischner de 2017, si el paciente es de bajo o alto riesgo, considerar TC a los 3 meses, PET/TC o biopsia de tejido.";
+                    }
+                }
+                else if(numeroNodulo === "solidoMultiples"){
+                    if(tipoNodulo === "solidoMenorSeis"){
+                        respuesta = "Múltiples nódulos pulmonares sólidos de menos de 6 mm de diámetro. Según los criterios de Fleischner de 2017, si el paciente es de bajo riesgo no se recomienda ningún seguimiento de rutina. Si el paciente es de alto riesgo se recomienda TC opcional a los 12 meses.";
+                    }
+                    else if(tipoNodulo === "solidoSeisOcho"){
+                        respuesta = "Múltiples nódulos pulmonares sólidos con diámetros entre 6 y 8 mm. Según los criterios de Fleischner de 2017, si el paciente es de bajo riesgo se recomienda TC a los 3-6 meses, luego considerar TC a los 18-24 meses. Si el paciente es de alto riesgo, se recomienda TC a los 3-6 meses y luego a los 18-24 meses."
+                    }
+                    else if(tipoNodulo === "solidoMayorSeis"){
+                        respuesta = "Múltiples nódulos pulmonares sólidos de más de 8 mm de diámetro. Según los criterios de Fleischner de 2017, si el paciente es de bajo o alto riesgo, se recomienda TC a los 3-6 meses, luego considerar TC a los 18-24 meses."
+                    }
+                }
+                if(numeroNodulo != 'null' && tipoNodulo != 'null'){
+                    cardResult.style.display = "block";
+                }
+                document.getElementById('resultadoTexto').innerHTML = respuesta;
+            }
+
+            function copiarClipboard(){
+                var copyText = document.getElementById("resultadoTexto");
+                navigator.clipboard.writeText(copyText.textContent);
+            }
+        });
+    </script>
+    </body>
+</html>
